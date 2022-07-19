@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
     public function index()
     {
 
-        $todos = Todo::all();
+        $todos = Todo::all()->where('owner', '==', Auth::id());
         return view('index')->with('todos', $todos);
 
     }
@@ -30,7 +31,7 @@ class TodoController extends Controller
     public function edit(Todo $todo)
     {
 
-        return view('edit')->with('todo',$todo);
+        return view('edit')->with('todo', $todo);
 
     }
 
@@ -84,6 +85,7 @@ class TodoController extends Controller
         $todo = new Todo();
         $todo->name = $data['name'];
         $todo->description = $data['description'];
+        $todo->owner = Auth::id();
         //dd($todo);
         $todo->save();
 
@@ -91,5 +93,12 @@ class TodoController extends Controller
 
         return redirect('/');
 
+    }
+
+    public function toggle_done(Todo $todo)
+    {
+        $todo->done = ($todo->done + 1) % 2;
+        $todo->save();
+        return redirect('/');
     }
 }

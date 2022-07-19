@@ -14,19 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware('auth')->group(function (){
+    Route::get('create', [TodoController::class, 'create']);
+    Route::get('show/{todo}', [TodoController::class, 'show']);
+    Route::get('edit/{todo}', [TodoController::class, 'edit']);
+    Route::post('update/{todo}', [TodoController::class, 'update']);
+    Route::get('delete/{todo}', [TodoController::class, 'delete']);
+    Route::get('hotovo/{todo}', [TodoController::class, 'toggle_done']);
+    Route::post('store-data', [TodoController::class, 'store']);
+    Route::get('/', [TodoController::class,'index'])->name('dashboard');
 
-Route::get('/', [TodoController::class, 'index']);
+});
 
-Route::get('create', [TodoController::class, 'create']);
 
-Route::get('show/{todo}', [TodoController::class, 'show']);
-Route::get('edit/{todo}', [TodoController::class, 'edit']);
-Route::post('update/{todo}', [TodoController::class, 'update']);
-Route::get('delete/{todo}', [TodoController::class, 'delete']);
-Route::post('store-data', [TodoController::class, 'store']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';

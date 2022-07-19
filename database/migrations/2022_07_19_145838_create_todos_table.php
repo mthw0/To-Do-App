@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('category', 30)->default('');
-            $table->string('owner', 30)->default('');
+            $table->integer('owner')->default(1);
             $table->boolean('done')->default(false);
             $table->string('name', 30);
             $table->string('description', 300);
