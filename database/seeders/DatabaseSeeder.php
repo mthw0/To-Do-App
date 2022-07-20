@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use App\Models\User;
 use App\Models\Todo;
 use Illuminate\Database\Seeder;
@@ -40,13 +41,24 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
+        DB::table('categories')->insert([
+            'name' => 'Kategoria1'
+        ]);DB::table('categories')->insert([
+            'name' => 'Kategoria2'
+        ]);DB::table('categories')->insert([
+            'name' => 'Kategoria3'
+        ]);
+
+
+
         for ($y = 0; $y < 4; $y++) {
             for ($x = 1; $x < 10; $x++) {
                 DB::table('todos')->insert([
                     'name' => 'Uloha ' . $x,
                     'description' => 'Toto je popis ulohy c.' . $x,
                     'owner' => $y,
-                    'done' => false
+                    'done' => false,
+                    'category'=>rand(1,3)
                 ]);
 
             }

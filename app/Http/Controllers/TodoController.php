@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,12 @@ class TodoController extends Controller
 
     public function create()
     {
-        return view('todos.create');
+        $nazvy = [];
+        foreach (Category::all() as $cat) {
+            $nazvy[] = $cat->name;
+
+        }
+        return view('todos.create',['nazvy'=>$nazvy]);
     }
 
     public function show(Todo $todo)
@@ -32,7 +38,12 @@ class TodoController extends Controller
     public function edit(Todo $todo)
     {
 
-        return view('edit')->with('todo', $todo);
+        $nazvy = [];
+        foreach (Category::all() as $cat) {
+            $nazvy[] = $cat->name;
+
+        }
+        return view('edit',['nazvy'=>$nazvy])->with('todo', $todo);
 
     }
 
@@ -53,6 +64,9 @@ class TodoController extends Controller
 
         $todo->name = $data['name'];
         $todo->description = $data['description'];
+        $cat = Category::where('name',$data['category'])->pluck('id');
+
+        $todo->category = $cat[0];
         $todo->save();
 
         session()->flash('success', 'Todo updated successfully');
@@ -86,8 +100,10 @@ class TodoController extends Controller
         $todo = new Todo();
         $todo->name = $data['name'];
         $todo->description = $data['description'];
+        $cat = Category::where('name',$data['category'])->pluck('id');
+        $todo->category = $cat;
         $todo->owner = Auth::id();
-        //dd($todo);
+
         $todo->save();
 
         session()->flash('success', 'Todo created succesfully');

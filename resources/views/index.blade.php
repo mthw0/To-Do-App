@@ -10,7 +10,7 @@
             <th scope="col">Názov</th>
             <th scope="col">Dokončené</th>
             <th scope="col">Vlastník</th>
-
+            <th scope="col">Kategória</th>
             <th scope="col">Akcie</th>
         </tr>
         </thead>

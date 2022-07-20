@@ -14,6 +14,17 @@
             <label for="description">Popis úlohy</label>
             <textarea class="form-control" name="description" rows="3"> {{$todo->description}} </textarea>
         </div>
+
+        <div class="form-group m-3">
+            <label for="category">Očkovacie miesto</label>
+            <select class="form-control" id="category" name="category" >
+
+                @foreach((array)$nazvy as $nazov)
+                    <option>{{$nazov}}</option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="form-group m-3">
             <input type="submit" class="btn btn-primary float-end" value="Odoslať">
         </div>
