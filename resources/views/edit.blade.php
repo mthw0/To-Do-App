@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    Edit Todo
+    Upraviť úlohu
 @endsection
 @section('content')
 
@@ -16,11 +16,26 @@
         </div>
 
         <div class="form-group m-3">
-            <label for="category">Očkovacie miesto</label>
+            <label for="category">Kategória</label>
             <select class="form-control" id="category" name="category" >
 
                 @foreach((array)$nazvy as $nazov)
                     <option>{{$nazov}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                Zdieľanie
+            </label>
+        </div>
+        <div class="form-group m-3">
+            <label for="category">Výber používateľa</label>
+            <select class="form-control" id="user" name="user" >
+                <option></option>
+                @foreach((array)$users as $user)
+                    <option>{{$user}}</option>
                 @endforeach
             </select>
         </div>

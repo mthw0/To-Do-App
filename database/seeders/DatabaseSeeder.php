@@ -49,8 +49,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'Kategoria3'
         ]);
 
-
-
         for ($y = 1; $y <= 4; $y++) {
             for ($x = 1; $x <= 10; $x++) {
                 DB::table('todos')->insert([

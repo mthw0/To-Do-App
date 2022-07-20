@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Sharing;
 use App\Models\Todo;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +18,8 @@ class TodoController extends Controller
         $sharing = DB::table('sharings')->get();
         foreach ($sharing as $share) {
 
-            if ($share->user_id==Auth::id()) {
-                $todos->add( Todo::all()->where('id','==',$share->todo_id)->first());
+            if ($share->user_id == Auth::id()) {
+                $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
             }
 
         }
@@ -33,7 +34,14 @@ class TodoController extends Controller
             $nazvy[] = $cat->name;
 
         }
-        return view('todos.create', ['nazvy' => $nazvy]);
+        $users = [];
+        foreach (User::all() as $user) {
+            if ($user->id != Auth::id()) {
+                $users[] = $user->name;
+            }
+
+        }
+        return view('todos.create', ['nazvy' => $nazvy, 'users' => $users]);
     }
 
     public function show(Todo $todo)
@@ -46,21 +54,24 @@ class TodoController extends Controller
         $nazvy = [];
         foreach (Category::all() as $cat) {
             $nazvy[] = $cat->name;
-
         }
-        return view('edit', ['nazvy' => $nazvy])->with('todo', $todo);
+        $users = [];
+        foreach (User::all() as $user) {
+            if ($user->id != Auth::id()) {
+                $users[] = $user->name;
+            }
+        }
+        return view('edit', ['nazvy' => $nazvy, 'users' => $users])->with('todo', $todo);
     }
 
     public function update(Todo $todo)
     {
-        try {
-            $this->validate(request(), [
-                'name' => ['required'],
-                'description' => ['required'],
+        $this->validate(request(), [
+            'name' => ['required'],
+            'description' => ['required'],
 
-            ]);
-        } catch (ValidationException $e) {
-        }
+        ]);
+
 
         $data = request()->all();
 
@@ -68,10 +79,22 @@ class TodoController extends Controller
         $todo->description = $data['description'];
         $cat = Category::where('name', $data['category'])->pluck('id');
 
+        if ($data['user'] != null) {
+            $sharing= new Sharing();
+            $rec = User::where('name', $data['user'])->pluck('id');
+            $sharing->user_id = $rec[0];
+            $sharing->todo_id = $todo->id;
+            $sharing->save();
+        } else {
+            $id = DB::table('sharings')->where('todo_id',$todo->id)->get();
+            $id=$id[0];
+            DB::table('sharings')->delete($id->id);
+        }
         $todo->category = $cat[0];
+        $todo->owner = Auth::id();
         $todo->save();
 
-        session()->flash('success', 'Todo updated successfully');
+        session()->flash('success', 'Úloha bola aktualizovaná');
 
         return redirect('/');
 
@@ -95,15 +118,21 @@ class TodoController extends Controller
         $data = request()->all();
 
         $todo = new Todo();
+        $sharing = new Sharing();
         $todo->name = $data['name'];
         $todo->description = $data['description'];
         $cat = Category::where('name', $data['category'])->pluck('id');
         $todo->category = $cat[0];
         $todo->owner = Auth::id();
-
         $todo->save();
+        if ($data['user'] != null) {
+            $rec = User::where('name', $data['user'])->pluck('id');
+            $sharing->todo_id = $todo->id;
+            $sharing->user_id = $rec[0];
+            $sharing->save();
+        }
 
-        session()->flash('success', 'Todo created succesfully');
+        session()->flash('success', 'Úloha bola vytvorená!');
 
         return redirect('/');
 

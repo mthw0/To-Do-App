@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('sharings', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('todo_id')
                 ->references('id')
                 ->on('todos')
