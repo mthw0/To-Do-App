@@ -10,7 +10,7 @@
     <th scope="row"><a href="show/{{$todo->id}}"
                        style="color: cornflowerblue">{{$todo->name}}</a></th>
     <td>{{$todo->done==0?"Prebieha":"Dokončené"}}</td>
-    <td>{{$owner }}</td>
+    <td>{{$todo->owner==Auth::id()?"Ja":$owner }}</td>
     <td>{{$cat }}</td>
 
     <td>
