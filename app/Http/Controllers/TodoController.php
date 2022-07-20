@@ -101,7 +101,7 @@ class TodoController extends Controller
         $todo->name = $data['name'];
         $todo->description = $data['description'];
         $cat = Category::where('name',$data['category'])->pluck('id');
-        $todo->category = $cat;
+        $todo->category = $cat[0];
         $todo->owner = Auth::id();
 
         $todo->save();
