@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('category', 30)->default('');
-            $table->integer('owner')->default(1);
+            $table->foreignId('category')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('owner')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('done')->default(false);
             $table->string('name', 30);
             $table->string('description', 300);
