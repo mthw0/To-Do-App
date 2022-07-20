@@ -39,107 +39,17 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("user4")
         ]);
 
-        $data = [
-            [
-                'name' => 'Uloha 1',
-                'description' => 'Toto je popis ulohy c.1',
-                'owner' => 1,
-                'done' => true
-            ],
-            [
-                'name' => 'Uloha 2',
-                'description' => 'Toto je popis ulohy c.2',
-                'owner' => 1,
-                'done' => true
-            ],
-            [
-                'name' => 'Uloha 3',
-                'description' => 'Toto je popis ulohy c.3',
-                'owner' => 1,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 4',
-                'description' => 'Toto je popis ulohy c.4',
-                'owner' => 1,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 5',
-                'description' => 'Toto je popis ulohy c.5',
-                'owner' => 1,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 6',
-                'description' => 'Toto je popis ulohy c.6',
-                'owner' => 1,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 2',
-                'description' => 'Toto je popis ulohy c.2',
-                'owner' => 2,
-                'done' => true
-            ],
-            [
-                'name' => 'Uloha 3',
-                'description' => 'Toto je popis ulohy c.3',
-                'owner' => 2,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 4',
-                'description' => 'Toto je popis ulohy c.4',
-                'owner' => 2,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 5',
-                'description' => 'Toto je popis ulohy c.5',
-                'owner' => 2,
-                'done' => true
-            ],
-            [
-                'name' => 'Uloha 6',
-                'description' => 'Toto je popis ulohy c.6',
-                'owner' => 2,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 2',
-                'description' => 'Toto je popis ulohy c.2',
-                'owner' => 3,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 3',
-                'description' => 'Toto je popis ulohy c.3',
-                'owner' => 3,
-                'done' => false
-            ],
-            [
-                'name' => 'Uloha 4',
-                'description' => 'Toto je popis ulohy c.4',
-                'owner' => 3,
-                'done' => true
-            ],
-            [
-                'name' => 'Uloha 5',
-                'description' => 'Toto je popis ulohy c.5',
-                'owner' => 3,
-                'done' => true
-            ],
-            [
-                'name' => 'Uloha 6',
-                'description' => 'Toto je popis ulohy c.6',
-                'owner' => 3,
-                'done' => true
-            ]
-        ];
 
-        DB::table('todos')->insert($data);
+        for ($y = 0; $y < 4; $y++) {
+            for ($x = 1; $x < 10; $x++) {
+                DB::table('todos')->insert([
+                    'name' => 'Uloha ' . $x,
+                    'description' => 'Toto je popis ulohy c.' . $x,
+                    'owner' => $y,
+                    'done' => false
+                ]);
 
-
+            }
+        }
     }
 }

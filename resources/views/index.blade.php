@@ -4,16 +4,27 @@
 @endsection
 @section('content')
     <a href="/create"><span class="btn btn-primary">Vytvoriť úlohu</span></a>
-    <div class="row mt-3">
-        <div class="col-12 align-self-center">
-            <ul class="list-group">
-                @foreach($todos as $todo)
-                    <li class="list-group-item"><a href="show/{{$todo->id}}"
-                                                   style="color: cornflowerblue">{{$todo->name}}</a>
-                        {{$todo->done==1?" - dokončné":" - prebieha"}}</li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
+    <table class="table table-hover table-responsive" style="display: inline-table">
+        <thead>
+        <tr>
+            <th scope="col">Názov</th>
+            <th scope="col">Dokončené</th>
+            <th scope="col">Vlastník</th>
+
+            <th scope="col">Akcie</th>
+        </tr>
+        </thead>
+        <tbody id="tabulka_body">
+        @foreach($todos as $todo)
+            @include('row')
+
+        @endforeach
+
+        </tbody>
+    </table>
+
+
+
+
 
 @endsection

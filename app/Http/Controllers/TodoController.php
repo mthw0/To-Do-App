@@ -14,6 +14,7 @@ class TodoController extends Controller
         $todos = Todo::all()->where('owner', '==', Auth::id());
         return view('index')->with('todos', $todos);
 
+
     }
 
     public function create()
