@@ -6,15 +6,17 @@ use App\Models\Category;
 use App\Models\Sharing;
 use App\Models\Todo;
 use App\Models\User;
+use App\Notifications\EmailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class TodoController extends Controller
 {
     public function index()
     {
-        $todos = Todo::all()->where('owner', '==', Auth::id());
+        $todos = Todo::withTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
         $sharing = DB::table('sharings')->get();
         foreach ($sharing as $share) {
 
@@ -80,14 +82,14 @@ class TodoController extends Controller
         $cat = Category::where('name', $data['category'])->pluck('id');
 
         if ($data['user'] != null) {
-            $sharing= new Sharing();
+            $sharing = new Sharing();
             $rec = User::where('name', $data['user'])->pluck('id');
             $sharing->user_id = $rec[0];
             $sharing->todo_id = $todo->id;
             $sharing->save();
         } else {
-            $id = DB::table('sharings')->where('todo_id',$todo->id)->get();
-            $id=$id[0];
+            $id = DB::table('sharings')->where('todo_id', $todo->id)->get();
+            $id = $id[0];
             DB::table('sharings')->delete($id->id);
         }
         $todo->category = $cat[0];
@@ -106,10 +108,15 @@ class TodoController extends Controller
         return redirect('/');
     }
 
+    public function undelete($id)
+    {
+        $todo = Todo::withTrashed()->find($id);
+        $todo->restore();
+        return redirect('/');
+    }
+
     public function store()
     {
-
-
         $this->validate(request(), [
             'name' => ['required'],
             'description' => ['required']
@@ -130,6 +137,18 @@ class TodoController extends Controller
             $sharing->todo_id = $todo->id;
             $sharing->user_id = $rec[0];
             $sharing->save();
+            //email send
+            $message = [
+                'greeting' => 'Ahoj',
+                'body' => 'Používateľ ' . $data['user'], 's vami zdieľa úlohu',
+                'thanks' => 'Bla bla bla toto je text',
+                'actionText' => 'Pozrite si ju tu:',
+                'actionURL' => url('/show/' . $todo->id),
+                'id' => $todo->id
+            ];
+            $user = User::find($rec);
+            $user->notify(new EmailNotification($message));
+
         }
 
         session()->flash('success', 'Úloha bola vytvorená!');
@@ -142,6 +161,38 @@ class TodoController extends Controller
     {
         $todo->done = ($todo->done + 1) % 2;
         $todo->save();
+        //email send
+        if ($todo->done) {
+            $message = [
+                'greeting' => 'Ahoj',
+                'body' => 'Uloha ' . $todo->name, ' bola dokončená',
+                'thanks' => 'Bla bla bla toto je text',
+                'actionText' => 'Pozrite si ju tu:',
+                'actionURL' => url('/show/' . $todo->id),
+                'id' => $todo->id
+            ];
+            $user = User::find($todo->owner);
+            $user->notify(new EmailNotification($message));
+
+        } else {
+            $message = [
+                'greeting' => 'Ahoj',
+                'body' => 'Uloha ' . $todo->name, ' už nie je dokončená',
+                'thanks' => 'Bla bla bla toto je text',
+                'actionText' => 'Pozrite si ju tu:',
+                'actionURL' => url('/show/' . $todo->id),
+                'id' => $todo->id
+            ];
+            $user = User::find($todo->owner);
+            $user->notify(new EmailNotification($message));
+
+        }
         return redirect('/');
     }
+
+    public function send()
+    {
+        //
+    }
+
 }

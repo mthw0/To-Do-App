@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('done')->default(false);
             $table->string('name', 30);
             $table->string('description', 300);
+            $table->softDeletes('deleted_at', $precision = 0);
         });
     }
 
