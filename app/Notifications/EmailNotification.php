@@ -45,8 +45,7 @@ class EmailNotification extends Notification
         return (new MailMessage)
             ->greeting($this->project['greeting'])
             ->line($this->project['body'])
-            ->action($this->project['actionText'], $this->project['actionURL'])
-            ->line($this->project['thanks']);
+            ->action($this->project['actionText'], $this->project['actionURL']);
 
     }
 

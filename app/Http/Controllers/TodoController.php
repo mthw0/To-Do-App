@@ -133,9 +133,9 @@ class TodoController extends Controller
             //email send
             $message = [
                 'greeting' => 'Ahoj',
-                'body' => 'Používateľ ' . $data['user'], 's vami zdieľa úlohu',
-                'thanks' => 'Bla bla bla toto je text',
-                'actionText' => 'Pozrite si ju tu:',
+                'body' => 'Používateľ ' . $data['user']. 's vami zdieľa úlohu',
+                'thanks' => 'Pozrite si ju tu:',
+                'actionText' => 'Odkaz',
                 'actionURL' => url('/show/' . $todo->id),
                 'id' => $todo->id
             ];
@@ -158,9 +158,9 @@ class TodoController extends Controller
         if ($todo->done) {
             $message = [
                 'greeting' => 'Ahoj',
-                'body' => 'Uloha ' . $todo->name, ' bola dokončená',
+                'body' => 'Uloha ' . $todo->name. ' bola dokončená',
                 'thanks' => 'Bla bla bla toto je text',
-                'actionText' => 'Pozrite si ju tu:',
+                'actionText' => 'Odkaz',
                 'actionURL' => url('/show/' . $todo->id),
                 'id' => $todo->id
             ];
@@ -170,9 +170,9 @@ class TodoController extends Controller
         } else {
             $message = [
                 'greeting' => 'Ahoj',
-                'body' => 'Uloha ' . $todo->name, ' už nie je dokončená',
+                'body' => 'Uloha ' . $todo->name. ' už nie je dokončená',
                 'thanks' => 'Bla bla bla toto je text',
-                'actionText' => 'Pozrite si ju tu:',
+                'actionText' => 'Odkaz',
                 'actionURL' => url('/show/' . $todo->id),
                 'id' => $todo->id
             ];
