@@ -20,6 +20,7 @@
             font-family: 'Nunito';
         }
     </style>
+    <link rel="stylesheet" href="app.css">
 </head>
 
 <body>

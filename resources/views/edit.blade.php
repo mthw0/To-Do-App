@@ -31,7 +31,7 @@
             </label>
         </div>
         <div class="form-group m-3">
-            <label for="category">Výber používateľa</label>
+            <label for="user">Výber používateľa</label>
             <select class="form-control" id="user" name="user" >
                 <option></option>
                 @foreach((array)$users as $user)

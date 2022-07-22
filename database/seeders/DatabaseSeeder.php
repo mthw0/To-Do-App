@@ -20,33 +20,33 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->create([
-            'name' => 'User1',
+            'name' => 'Janko Hraško',
             'email' => 'user1@todo.com',
             'password' => Hash::make("user1")
         ]);
         User::factory()->create([
-            'name' => 'User2',
+            'name' => 'Jožko Mrkvička',
             'email' => 'user2@todo.com',
             'password' => Hash::make("user2")
         ]);
         User::factory()->create([
-            'name' => 'User3',
+            'name' => 'Eva Múdra',
             'email' => 'user3@todo.com',
             'password' => Hash::make("user3")
         ]);
         User::factory()->create([
-            'name' => 'User4',
+            'name' => 'Peter Rýchly',
             'email' => 'user4@todo.com',
             'password' => Hash::make("user4")
         ]);
 
 
         DB::table('categories')->insert([
-            'name' => 'Kategoria1'
+            'name' => 'Škola'
         ]);DB::table('categories')->insert([
-            'name' => 'Kategoria2'
+            'name' => 'Práca'
         ]);DB::table('categories')->insert([
-            'name' => 'Kategoria3'
+            'name' => 'Zábava'
         ]);
 
         for ($y = 1; $y <= 4; $y++) {

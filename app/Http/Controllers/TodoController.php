@@ -7,26 +7,23 @@ use App\Models\Sharing;
 use App\Models\Todo;
 use App\Models\User;
 use App\Notifications\EmailNotification;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
 class TodoController extends Controller
 {
     public function index()
     {
-        $todos = Todo::withTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
+        $todos = Todo::withoutTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
+        $todos2 = Todo::onlyTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
         $sharing = DB::table('sharings')->get();
         foreach ($sharing as $share) {
 
             if ($share->user_id == Auth::id()) {
                 $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
             }
-
         }
-
-        return view('index')->with('todos', $todos);
+        return view('index',['todos'=>$todos, 'todos2'=>$todos2]);
     }
 
     public function create()
@@ -34,14 +31,12 @@ class TodoController extends Controller
         $nazvy = [];
         foreach (Category::all() as $cat) {
             $nazvy[] = $cat->name;
-
         }
         $users = [];
         foreach (User::all() as $user) {
             if ($user->id != Auth::id()) {
                 $users[] = $user->name;
             }
-
         }
         return view('todos.create', ['nazvy' => $nazvy, 'users' => $users]);
     }
@@ -71,7 +66,6 @@ class TodoController extends Controller
         $this->validate(request(), [
             'name' => ['required'],
             'description' => ['required'],
-
         ]);
 
 
@@ -99,7 +93,6 @@ class TodoController extends Controller
         session()->flash('success', 'Úloha bola aktualizovaná');
 
         return redirect('/');
-
     }
 
     public function delete(Todo $todo)
