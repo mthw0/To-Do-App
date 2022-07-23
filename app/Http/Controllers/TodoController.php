@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Objednavka;
 use App\Models\Sharing;
 use App\Models\Todo;
 use App\Models\User;
@@ -32,8 +31,8 @@ class TodoController extends Controller
     public function fetch(Request $request)
     {
         if ($request->ajax()) {
-            $todos = Todo::withoutTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
-            $todos2 = Todo::onlyTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
+            $todos = Todo::withoutTrashed()->get()->where('owner', '==', Auth::id());
+            $todos2 = Todo::onlyTrashed()->get()->where('owner', '==', Auth::id());
             $sharing = DB::table('sharings')->get();
             foreach ($sharing as $share) {
 
@@ -129,6 +128,122 @@ class TodoController extends Controller
         $todo->restore();
         return response('success', 200);
     }
+
+    public function filter(){
+        $data = request()->all();
+
+        $todos = Todo::withoutTrashed()->get()->where('owner', '==', Auth::id());
+        $todos2 = Todo::onlyTrashed()->get()->where('owner', '==', Auth::id());
+        $cats = Category::all()->pluck('name');
+        if (!array_key_exists("doneNo",$data)&&!array_key_exists("doneYes",$data)) {
+            return view('tabulka', ['todos' => [], 'todos2' => [],'cats'=>[]])->render();
+        }
+        if (!array_key_exists("mineNo",$data)&&!array_key_exists("mineYes",$data)) {
+            return view('tabulka', ['todos' => [], 'todos2' => [],'cats'=>[]])->render();
+        }
+        if (!array_key_exists("categoryŠkola",$data)&&!array_key_exists("categoryPráca",$data)&&!array_key_exists("categoryZábava",$data)) {
+            return view('tabulka', ['todos' => [], 'todos2' => [],'cats'=>[]])->render();
+        }
+        if (!array_key_exists("doneYes",$data)) {
+            foreach ($todos as $item){
+                if ($item->done==1) {
+                    $todos->forget($item->id-1);
+                }
+            }
+
+            foreach ($todos2 as $item){
+                if ($item->done==1) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+
+        }
+        if (!array_key_exists("doneNo",$data)) {
+            foreach ($todos as $item){
+                if ($item->done==0) {
+                    $todos->forget($item->id-1);
+                }
+            }
+            foreach ($todos2 as $item){
+                if ($item->done==0) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+        }
+
+        if (!array_key_exists("mineYes",$data)) {
+            foreach ($todos as $item){
+                if ($item->owner==Auth::id()) {
+                    $todos->forget($item->id-1);
+                }
+            }
+
+            foreach ($todos2 as $item){
+                if ($item->owner==Auth::id()) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+        }
+        if (!array_key_exists("mineNo",$data)) {
+            foreach ($todos as $item){
+                if (!$item->owner==Auth::id()) {
+                    $todos->forget($item->id-1);
+                }
+            }
+            foreach ($todos2 as $item){
+                if (!$item->owner==Auth::id()) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+        }
+
+        if (!array_key_exists("categoryŠkola",$data)) {
+            foreach ($todos as $item){
+                if ($item->category==1) {
+                    $todos->forget($item->id-1);
+                }
+            }
+            foreach ($todos2 as $item){
+                if ($item->category==1) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+        }
+        if (!array_key_exists("categoryPráca",$data)) {
+            foreach ($todos as $item){
+                if ($item->category==2) {
+                    $todos->forget($item->id-1);
+                }
+            }
+            foreach ($todos2 as $item){
+                if ($item->category==2) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+        }
+        if (!array_key_exists("categoryZábava",$data)) {
+            foreach ($todos as $item){
+                if ($item->category==3) {
+                    $todos->forget($item->id-1);
+                }
+            }
+            foreach ($todos2 as $item){
+                if ($item->category==3) {
+                    $todos2->forget($item->id-1);
+                }
+            }
+        }
+
+        $sharing = DB::table('sharings')->get();
+        foreach ($sharing as $share) {
+
+            if ($share->user_id == Auth::id()) {
+                $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
+            }
+        }
+        return view('tabulka', ['todos' => $todos, 'todos2' => $todos2,'cats'=>$cats])->render();
+    }
+
 
     public function store()
     {

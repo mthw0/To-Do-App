@@ -1,7 +1,7 @@
 @php
 
 
-@endphp
+    @endphp
 
 
 @extends('layouts.app')
@@ -11,36 +11,37 @@
 @section('content')
     <a href="/create" style="margin-top: 20px"><span id="novaUloha" class="btn btn-primary">Vytvoriť úlohu</span></a>
     <hr>
-    <section>
-        <form>
-            <fieldset>
-                <legend>Dokončené:</legend>
-                <label>Ano:
-                    <input type="checkbox" name="done" value="Ano" checked id="doneTrue"/></label>
-                <label>Nie:
-                    <input type="checkbox" name="done" value="Nie" checked id="doneFalse"/></label>
+    <form action="filter" id="filterForm" method="post" class="mt-4 p-4">
+        @csrf
+        <fieldset>
+            <legend>Dokončené:</legend>
+            <label>Ano:
+                <input type="checkbox" name="doneYes" value="Checked" checked id="doneTrue"/></label>
+            <label>Nie:
+                <input type="checkbox" name="doneNo" value="Checked" checked id="doneFalse"/></label>
 
-            </fieldset>
-            <br>
-            <fieldset>
-                <legend>Moje:</legend>
-                <label>Ano:
-                    <input type="checkbox" name="mine" value="Ano" checked id="mineTrue"/></label>
-                <label>Nie:
-                    <input type="checkbox" name="mine" value="Nie" checked id="mineFalse"/></label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Moje:</legend>
+            <label>Ano:
+                <input type="checkbox" name="mineYes" value="Checked" checked id="mineTrue"/></label>
+            <label>Nie:
+                <input type="checkbox" name="mineNo" value="Checked" checked id="mineFalse"/></label>
 
-            </fieldset>
-            <br>
-            <fieldset>
-                <legend>Kategorie:</legend>
-                @foreach($cats as $cat)
-                    <label>{{$cat}}:
-                        <input type="checkbox" name="category" value="{{$cat}} " checked/></label>
-                @endforeach
-
-
-        </form>
-    </section>
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Kategorie:</legend>
+            @foreach($cats as $cat)
+                <label>{{$cat}}:
+                    <input type="checkbox" name="category{{$cat}}" value="Checked" checked/></label>
+            @endforeach
+        </fieldset>
+        <div class="form-group m-3">
+            <input type="submit" id="filterButton" class="btn btn-primary float-end" value="Filtrovať">
+        </div>
+    </form>
 
     <div id="tabulka"></div>
 
@@ -85,7 +86,6 @@
                                 $('#tabulka').html(data);
                             }
                         });
-                        //alert("Vymazanie prebehlo úspešne!");
                     }
                 });
 
@@ -113,12 +113,29 @@
                         $.ajax({
                             url: "fetch",
                             success: function (data) {
-                                $('#tabulka').html(data);
+
                             }
                         });
-                        //alert("Vymazanie prebehlo úspešne!");
                     }
                 });
+
+        });
+        $("#filterForm").submit(function(e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+            var actionUrl = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(),
+                success: function(data)
+                {
+                    $('#tabulka').html(data);
+                }
+            });
 
         });
         $(document).off('click', '.undeleteTodo').on('click', '.undeleteTodo', function (e) {
@@ -147,21 +164,10 @@
                                 $('#tabulka').html(data);
                             }
                         });
-                        //alert("Vymazanie prebehlo úspešne!");
                     }
                 });
 
         });
-
-        const checkbox = document.getElementById('doneTrue')
-
-        checkbox.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                alert('checked');
-            } else {
-                alert('not checked');
-            }
-        })
 
 
     </script>

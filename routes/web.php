@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function (){
     Route::get('undelete/{todo}', [TodoController::class, 'undelete'])->name('undelete');
     Route::get('hotovo/{todo}', [TodoController::class, 'toggle_done'])->name('toggle_done');
     Route::post('store-data', [TodoController::class, 'store']);
+    Route::post('filter', [TodoController::class, 'filter'])->name('filter');
     Route::get('/', [TodoController::class,'index']);
     Route::get('/fetch', [TodoController::class,'fetch']);
     Route::get('/send',[TodoController::class, 'send'])->name('send');;
