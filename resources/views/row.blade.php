@@ -36,7 +36,7 @@
                 </a>
             @endif
             <a href="/hotovo/{{$todo->id}}"><span
-                    class="btn {{$todo->done==0?"btn-success":"btn-outline-success"}}">{{$todo->done==0?"Dokončiť":"Pokračovať"}}</span></a>
+                    class="btn toggleDoneTodo {{$todo->done==0?"btn-success":"btn-outline-success"}}" data-id="{{ $todo->id }}">{{$todo->done==0?"Dokončiť":"Pokračovať"}}</span></a>
         @else
             <a href="/undelete/{{$todo->id}}"><span class="btn btn-outline-danger">Obnoviť</span></a>
         @endif
