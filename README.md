@@ -7,7 +7,7 @@
 6. Zdieľanie ToDo itemov iným userom (+ zrušenie zdieľania) ✔️
 7. Mazanie itemov + vrátenie späť (pri nechcenom zmazaní) ✔️
 8. Odosielanie emailov/notifikácií - pri zdieľaní itemov, pri označení za done atď. ✔️
-9. Filtrovanie podľa kategórie, podľa toho či sú dokončené, podľa toho či sú moje alebo zdieľané
+9. Filtrovanie podľa kategórie, podľa toho či sú dokončené, podľa toho či sú moje alebo zdieľané ✔️
 
 TODO:
-- Better GUI
+- Krajšie rozhranie
