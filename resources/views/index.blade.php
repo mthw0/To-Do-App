@@ -16,18 +16,18 @@
         <fieldset>
             <legend>Dokončené:</legend>
             <label>Ano:
-                <input type="checkbox" name="doneYes" value="Checked" checked id="doneTrue"/></label>
+                <input class="form-check-input" type="checkbox" name="doneYes" value="Checked" checked id="doneTrue"/></label>
             <label>Nie:
-                <input type="checkbox" name="doneNo" value="Checked" checked id="doneFalse"/></label>
+                <input class="form-check-input" type="checkbox" name="doneNo" value="Checked" checked id="doneFalse"/></label>
 
         </fieldset>
         <br>
         <fieldset>
             <legend>Moje:</legend>
             <label>Ano:
-                <input type="checkbox" name="mineYes" value="Checked" checked id="mineTrue"/></label>
+                <input class="form-check-input" type="checkbox" name="mineYes" value="Checked" checked id="mineTrue"/></label>
             <label>Nie:
-                <input type="checkbox" name="mineNo" value="Checked" checked id="mineFalse"/></label>
+                <input class="form-check-input" type="checkbox" name="mineNo" value="Checked" checked id="mineFalse"/></label>
 
         </fieldset>
         <br>
@@ -35,7 +35,7 @@
             <legend>Kategorie:</legend>
             @foreach($cats as $cat)
                 <label>{{$cat}}:
-                    <input type="checkbox" name="category{{$cat}}" value="Checked" checked/></label>
+                    <input class="form-check-input" type="checkbox" name="category{{$cat}}" value="Checked" checked/></label>
             @endforeach
         </fieldset>
         <div class="form-group m-3">
