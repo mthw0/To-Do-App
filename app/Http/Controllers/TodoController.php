@@ -18,6 +18,7 @@ class TodoController extends Controller
     {
         $todos = Todo::withoutTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
         $todos2 = Todo::onlyTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
+        $cats = Category::all()->pluck('name');
         $sharing = DB::table('sharings')->get();
         foreach ($sharing as $share) {
 
@@ -25,7 +26,7 @@ class TodoController extends Controller
                 $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
             }
         }
-        return view('index', ['todos' => $todos, 'todos2' => $todos2]);
+        return view('index', ['todos' => $todos, 'todos2' => $todos2,'cats'=>$cats]);
     }
 
     public function fetch(Request $request)
@@ -42,6 +43,7 @@ class TodoController extends Controller
             }
             return view('tabulka', ['todos' => $todos, 'todos2' => $todos2])->render();
         }
+
     }
 
     public function create()
@@ -125,7 +127,7 @@ class TodoController extends Controller
     {
         $todo = Todo::withTrashed()->find($id);
         $todo->restore();
-        return redirect('/');
+        return response('success', 200);
     }
 
     public function store()

@@ -7,7 +7,7 @@
         <th scope="col">Akcie</th>
     </tr>
     </thead>
-    <tbody id="tabulka_body">
+    <tbody id="tabulka1_body">
     @foreach($todos as $todo)
         @include('row')
     @endforeach
@@ -25,7 +25,7 @@
         <th scope="col">Akcie</th>
     </tr>
     </thead>
-    <tbody id="tabulka_body">
+    <tbody id="tabulka2_body">
     @foreach($todos2 as $todo)
         @include('row')
     @endforeach
