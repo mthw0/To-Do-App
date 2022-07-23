@@ -71,7 +71,9 @@ class EmailNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'project_id' => $this->project['id']
+            'project_id' => $this->project['id'],
+            'message'=> $this->project['body'],
+            'url'=> $this->project['actionURL']
         ];
     }
 }

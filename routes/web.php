@@ -20,10 +20,12 @@ Route::middleware('auth')->group(function (){
     Route::get('edit/{todo}', [TodoController::class, 'edit']);
     Route::post('update/{todo}', [TodoController::class, 'update']);
     Route::get('delete/{todo}', [TodoController::class, 'delete']);
+    Route::delete('/todo/{id}', [TodoController::class, 'delete2'])->name('todo.delete');
     Route::get('undelete/{todo}', [TodoController::class, 'undelete']);
     Route::get('hotovo/{todo}', [TodoController::class, 'toggle_done']);
     Route::post('store-data', [TodoController::class, 'store']);
-    Route::get('/', [TodoController::class,'index'])->name('dashboard');
+    Route::get('/', [TodoController::class,'index']);
+    Route::get('/fetch', [TodoController::class,'fetch']);
     Route::get('/send',[TodoController::class, 'send'])->name('send');;
 
 });

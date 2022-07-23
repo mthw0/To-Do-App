@@ -8,8 +8,7 @@
 @endphp
 <tr>
     @if($todo->done)
-        <th scope="row"><a href="show/{{$todo->id}}"
-                           style="color: cornflowerblue">
+        <th scope="row"><a href="show/{{$todo->id}}" style="color: cornflowerblue">
                 <del>{{$todo->name}}</del>
             </a></th>
         <td>
@@ -29,7 +28,12 @@
         @if($todo->deleted_at==null)
             <a href="/edit/{{$todo->id}}"><span class="btn btn-primary">Upraviť</span></a>
             @if(Auth::id()==$todo->owner)
-                <a href="/delete/{{$todo->id}}"><span class="btn btn-danger">Vymazať</span></a>
+                <a href="{{ route('todo.delete', $todo->id) }}" class="btn btn-danger deleteTodo"
+                   data-id="{{ $todo->id }}">
+                    @csrf
+                    @method('delete')
+                    Vymazať
+                </a>
             @endif
             <a href="/hotovo/{{$todo->id}}"><span
                     class="btn {{$todo->done==0?"btn-success":"btn-outline-success"}}">{{$todo->done==0?"Dokončiť":"Pokračovať"}}</span></a>

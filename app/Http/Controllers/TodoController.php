@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Objednavka;
 use App\Models\Sharing;
 use App\Models\Todo;
 use App\Models\User;
 use App\Notifications\EmailNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +25,23 @@ class TodoController extends Controller
                 $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
             }
         }
-        return view('index',['todos'=>$todos, 'todos2'=>$todos2]);
+        return view('index', ['todos' => $todos, 'todos2' => $todos2]);
+    }
+
+    public function fetch(Request $request)
+    {
+        if ($request->ajax()) {
+            $todos = Todo::withoutTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
+            $todos2 = Todo::onlyTrashed()->orderBy('deleted_at')->orderBy('done')->orderBy('category')->get()->where('owner', '==', Auth::id());
+            $sharing = DB::table('sharings')->get();
+            foreach ($sharing as $share) {
+
+                if ($share->user_id == Auth::id()) {
+                    $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
+                }
+            }
+            return view('tabulka', ['todos' => $todos, 'todos2' => $todos2])->render();
+        }
     }
 
     public function create()
@@ -95,6 +113,14 @@ class TodoController extends Controller
         return redirect('/');
     }
 
+    public function delete2($id)
+    {
+        $todo = Todo::find($id);
+        $todo->delete();
+        return response('success', 200);
+
+    }
+
     public function delete(Todo $todo)
     {
         $todo->delete();
@@ -133,7 +159,7 @@ class TodoController extends Controller
             //email send
             $message = [
                 'greeting' => 'Ahoj',
-                'body' => 'Používateľ ' . $data['user']. 's vami zdieľa úlohu',
+                'body' => 'Používateľ ' . $data['user'] . 's vami zdieľa úlohu',
                 'thanks' => 'Pozrite si ju tu:',
                 'actionText' => 'Odkaz',
                 'actionURL' => url('/show/' . $todo->id),
@@ -158,7 +184,7 @@ class TodoController extends Controller
         if ($todo->done) {
             $message = [
                 'greeting' => 'Ahoj',
-                'body' => 'Uloha ' . $todo->name. ' bola dokončená',
+                'body' => 'Uloha ' . $todo->name . ' bola dokončená',
                 'thanks' => 'Bla bla bla toto je text',
                 'actionText' => 'Odkaz',
                 'actionURL' => url('/show/' . $todo->id),
@@ -170,7 +196,7 @@ class TodoController extends Controller
         } else {
             $message = [
                 'greeting' => 'Ahoj',
-                'body' => 'Uloha ' . $todo->name. ' už nie je dokončená',
+                'body' => 'Uloha ' . $todo->name . ' už nie je dokončená',
                 'thanks' => 'Bla bla bla toto je text',
                 'actionText' => 'Odkaz',
                 'actionURL' => url('/show/' . $todo->id),
