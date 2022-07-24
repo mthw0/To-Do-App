@@ -11,3 +11,4 @@
 
 TODO:
 - Krajšie rozhranie
+- Opravy GUI zdielania

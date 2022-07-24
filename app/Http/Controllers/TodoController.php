@@ -151,91 +151,64 @@ class TodoController extends Controller
             return view('tabulka', ['todos' => [], 'todos2' => [],'cats'=>[]])->render();
         }
         if (!array_key_exists("doneYes",$data)) {
-            foreach ($todos as $item){
-                if ($item->done==1) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if ($item->done==1) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->done!=1;
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->done!=1;
+            });
 
         }
         if (!array_key_exists("doneNo",$data)) {
-            foreach ($todos as $item){
-                if ($item->done==0) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if ($item->done==0) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->done!=0;
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->done!=0;
+            });
         }
 
         if (!array_key_exists("mineYes",$data)) {
-            foreach ($todos as $item){
-                if ($item->owner==Auth::id()) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if ($item->owner==Auth::id()) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->owner!=Auth::id();
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->owner!=Auth::id();
+            });
+
         }
         if (!array_key_exists("mineNo",$data)) {
-            foreach ($todos as $item){
-                if (!$item->owner==Auth::id()) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if (!$item->owner==Auth::id()) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->owner==Auth::id();
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->owner==Auth::id();
+            });
         }
 
         if (!array_key_exists("categoryŠkola",$data)) {
-            foreach ($todos as $item){
-                if ($item->category==1) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if ($item->category==1) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->category!=1;
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->category!=1;
+            });
         }
         if (!array_key_exists("categoryPráca",$data)) {
-            foreach ($todos as $item){
-                if ($item->category==2) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if ($item->category==2) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->category!=2;
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->category!=2;
+            });
         }
         if (!array_key_exists("categoryZábava",$data)) {
-            foreach ($todos as $item){
-                if ($item->category==3) {
-                    $todos->forget($item->id-1);
-                }
-            }
-            foreach ($todosDeleted as $item){
-                if ($item->category==3) {
-                    $todosDeleted->forget($item->id-1);
-                }
-            }
+            $todos=$todos->filter(function ($item){
+                return $item->category!=3;
+            });
+            $todosDeleted=$todosDeleted->filter(function ($item){
+                return $item->category!=3;
+            });
         }
 
         return view('tabulka', ['todos' => $todos, 'todos2' => $todosDeleted,'cats'=>$cats])->render();
