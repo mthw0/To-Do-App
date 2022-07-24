@@ -1,9 +1,3 @@
-@php
-
-
-    @endphp
-
-
 @extends('layouts.app')
 @section('title')
     Úlohy
@@ -14,7 +8,7 @@
     <form action="filter" id="filterForm" method="post" class="mt-4 p-4">
         @csrf
         <fieldset>
-            <legend>Dokončené:</legend>
+            <legend>Dokončené</legend>
             <label>Ano:
                 <input class="form-check-input" type="checkbox" name="doneYes" value="Checked" checked id="doneTrue"/></label>
             <label>Nie:
@@ -23,16 +17,16 @@
         </fieldset>
         <br>
         <fieldset>
-            <legend>Moje:</legend>
-            <label>Ano:
+            <legend>Vlastníctvo</legend>
+            <label>Moje:
                 <input class="form-check-input" type="checkbox" name="mineYes" value="Checked" checked id="mineTrue"/></label>
-            <label>Nie:
+            <label>Zdieľané so mnou:
                 <input class="form-check-input" type="checkbox" name="mineNo" value="Checked" checked id="mineFalse"/></label>
 
         </fieldset>
         <br>
         <fieldset>
-            <legend>Kategorie:</legend>
+            <legend>Kategorie</legend>
             @foreach($cats as $cat)
                 <label>{{$cat}}:
                     <input class="form-check-input" type="checkbox" name="category{{$cat}}" value="Checked" checked/></label>

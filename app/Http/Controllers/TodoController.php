@@ -131,10 +131,16 @@ class TodoController extends Controller
 
     public function filter(){
         $data = request()->all();
-
         $todos = Todo::withoutTrashed()->get()->where('owner', '==', Auth::id());
-        $todos2 = Todo::onlyTrashed()->get()->where('owner', '==', Auth::id());
+        $todosDeleted = Todo::onlyTrashed()->get()->where('owner', '==', Auth::id());
         $cats = Category::all()->pluck('name');
+        $sharing = DB::table('sharings')->get();
+        foreach ($sharing as $share) {
+            if ($share->user_id == Auth::id()) {
+                $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
+            }
+        }
+
         if (!array_key_exists("doneNo",$data)&&!array_key_exists("doneYes",$data)) {
             return view('tabulka', ['todos' => [], 'todos2' => [],'cats'=>[]])->render();
         }
@@ -150,10 +156,9 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if ($item->done==1) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
 
@@ -164,9 +169,9 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if ($item->done==0) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
         }
@@ -177,10 +182,9 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if ($item->owner==Auth::id()) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
         }
@@ -190,9 +194,9 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if (!$item->owner==Auth::id()) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
         }
@@ -203,9 +207,9 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if ($item->category==1) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
         }
@@ -215,9 +219,9 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if ($item->category==2) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
         }
@@ -227,21 +231,14 @@ class TodoController extends Controller
                     $todos->forget($item->id-1);
                 }
             }
-            foreach ($todos2 as $item){
+            foreach ($todosDeleted as $item){
                 if ($item->category==3) {
-                    $todos2->forget($item->id-1);
+                    $todosDeleted->forget($item->id-1);
                 }
             }
         }
 
-        $sharing = DB::table('sharings')->get();
-        foreach ($sharing as $share) {
-
-            if ($share->user_id == Auth::id()) {
-                $todos->add(Todo::all()->where('id', '==', $share->todo_id)->first());
-            }
-        }
-        return view('tabulka', ['todos' => $todos, 'todos2' => $todos2,'cats'=>$cats])->render();
+        return view('tabulka', ['todos' => $todos, 'todos2' => $todosDeleted,'cats'=>$cats])->render();
     }
 
 

@@ -50,10 +50,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         for ($y = 1; $y <= 4; $y++) {
-            for ($x = 1; $x <= 10; $x++) {
+            for ($x = 1; $x <= rand(10,20); $x++) {
                 DB::table('todos')->insert([
                     'name' => 'Uloha ' . $x,
-                    'description' => 'Toto je popis ulohy c.' . $x,
+                    'description' => 'Toto je popis ulohy c.' . $x. '. Bla Bla toto je text, toto je test, toto je text.',
                     'owner' => $y,
                     'done' => false,
                     'category'=>rand(1,3)
@@ -62,19 +62,5 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        DB::table('sharings')->insert([
-           'todo_id' => '1',
-           'user_id' => '2'
-        ]);
-
-        DB::table('sharings')->insert([
-            'todo_id' => '2',
-            'user_id' => '2'
-        ]);
-
-        DB::table('sharings')->insert([
-            'todo_id' => '2',
-            'user_id' => '3'
-        ]);
     }
 }
