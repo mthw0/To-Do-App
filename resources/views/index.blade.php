@@ -3,7 +3,7 @@
     Úlohy
 @endsection
 @section('content')
-    <a href="/create" style="margin-top: 20px"><span id="novaUloha" class="btn btn-primary">Vytvoriť úlohu</span></a>
+    <a href="/create" style="margin-top: 20px"><span id="novaUloha" title="Nová úloha" class="btn btn-outline-primary">➕</span></a>
     <hr>
     <form action="filter" id="filterForm" method="post" class="mt-4 p-4">
         @csrf
@@ -32,9 +32,6 @@
                     <input class="form-check-input" type="checkbox" name="category{{$cat}}" value="Checked" checked/></label>
             @endforeach
         </fieldset>
-        <div class="form-group m-3">
-            <input type="submit" id="filterButton" class="btn btn-primary float-end" value="Filtrovať">
-        </div>
     </form>
 
     <div id="tabulka"></div>
@@ -84,11 +81,12 @@
                 });
 
         });
-        $(document).off('click', '.toggleDoneTodo').on('click', '.toggleDoneTodo', function (e) {
+        $(document).off('change', '.toggleDoneTodo').on('change', '.toggleDoneTodo', function (e) {
             e.preventDefault();
 
             const id = $(this).data("id");
             const token = $("meta[name='csrf-token']").attr("content");
+            let form = $('#filterForm');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -103,35 +101,33 @@
                         _token: token,
                         id: id
                     },
-                    success: function (res) {
+                    success: function () {
                         $.ajax({
-                            url: "fetch",
-                            success: function (data) {
-
+                            type: "POST",
+                            url: 'filter',
+                            data: form.serialize(),
+                            success: function(data)
+                            {
+                                $('#tabulka').html(data);
                             }
                         });
                     }
                 });
-
         });
-        $("#filterForm").submit(function(e) {
-
+        $('.form-check-input').change(function (e) {
             e.preventDefault();
-
-            var form = $(this);
-            var actionUrl = form.attr('action');
 
             $.ajax({
                 type: "POST",
-                url: actionUrl,
-                data: form.serialize(),
+                url: 'filter',
+                data: $("#filterForm").serialize(),
                 success: function(data)
                 {
                     $('#tabulka').html(data);
                 }
             });
+        })
 
-        });
         $(document).off('click', '.undeleteTodo').on('click', '.undeleteTodo', function (e) {
             e.preventDefault();
 

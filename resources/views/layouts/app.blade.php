@@ -38,7 +38,7 @@
         <a href="route('logout')"
            onclick="event.preventDefault();
                                         this.closest('form').submit();">
-            {{ __('Odhásiť') }}
+            {{ __('Odhásiť sa') }}
         </a>
     </form>
     </div>

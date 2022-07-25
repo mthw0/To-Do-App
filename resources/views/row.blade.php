@@ -7,10 +7,16 @@
     $cat=$cat[0];
 @endphp
 <tr id="row{{$todo->id}}">
+
     @if($todo->done)
-        <th scope="row"><a href="show/{{$todo->id}}" style="color: cornflowerblue">
+
+        <th scope="row">
+            <input type="checkbox" href="/hotovo/{{$todo->id}}" class="form-check-input toggleDoneTodo"
+                   {{$todo->done==0?"":"checked"}} data-id="{{ $todo->id }}">
+        </th>
+        <td><a href="show/{{$todo->id}}" style="color: cornflowerblue">
                 <del>{{$todo->name}}</del>
-            </a></th>
+            </a></td>
         <td>
             <del>{{$todo->owner==Auth::id()?"Ja (".$owner.")":$owner }}</del>
         </td>
@@ -18,25 +24,28 @@
             <del>{{$cat }}</del>
         </td>
     @else
-
-        <th scope="row"><a href="show/{{$todo->id}}"
-                           style="color: cornflowerblue">{{$todo->name}}</a></th>
+        <th scope="row">
+            <input type="checkbox" href="/hotovo/{{$todo->id}}" class="form-check-input toggleDoneTodo"
+                   {{$todo->done==0?"":"checked"}} data-id="{{ $todo->id }}">
+        </th>
+        <td>
+            <a href="show/{{$todo->id}}" style="color: cornflowerblue">{{$todo->name}}</a>
+        </td>
         <td>{{$todo->owner==Auth::id()?"Ja (".$owner.")":$owner }}</td>
         <td>{{$cat }}</td>
     @endif
     <td style="color:green;">
         @if($todo->deleted_at==null)
-            <a href="/edit/{{$todo->id}}"><span class="btn btn-primary">Upraviť</span></a>
+            <a href="/edit/{{$todo->id}}" title="Upraviť" class="btn btn-outline-primary">✏️</a>
             @if(Auth::id()==$todo->owner)
-                <a href="{{ route('todo.delete', $todo->id) }}" class="btn btn-danger deleteTodo"
-                   data-id="{{ $todo->id }}">
+                <a href="{{ route('todo.delete', $todo->id) }}" class="btn btn-outline-danger deleteTodo"
+                   data-id="{{ $todo->id }}" title="Vymazať">
                     @csrf
                     @method('delete')
-                    Vymazať
+                    🗑️
                 </a>
             @endif
-            <a href="/hotovo/{{$todo->id}}"><span
-                    class="btn toggleDoneTodo {{$todo->done==0?"btn-success":"btn-outline-success"}}" data-id="{{ $todo->id }}">{{$todo->done==0?"Dokončiť":"Pokračovať"}}</span></a>
+
         @else
             <a href="/undelete/{{$todo->id}}" class="btn btn-outline-danger undeleteTodo" data-id="{{ $todo->id }}">Obnoviť</a>
         @endif

@@ -1,6 +1,7 @@
 <table id="tabulka1" class="table table-hover table-responsive" style="display: inline-table">
     <thead>
     <tr>
+        <th scope="col"></th>
         <th scope="col">Názov</th>
         <th scope="col">Vlastník</th>
         <th scope="col">Kategória</th>
@@ -19,6 +20,7 @@
 <table id="tabulka2" class="table table-hover table-responsive" style="display: inline-table">
     <thead>
     <tr>
+        <th scope="col"></th>
         <th scope="col">Názov</th>
         <th scope="col">Vlastník</th>
         <th scope="col">Kategória</th>
