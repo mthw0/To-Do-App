@@ -10,5 +10,4 @@
 9. Filtrovanie podľa kategórie, podľa toho či sú dokončené, podľa toho či sú moje alebo zdieľané ✔️
 
 TODO:
-- Krajšie rozhranie
 - Opravy GUI zdielania

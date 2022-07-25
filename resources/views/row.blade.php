@@ -36,7 +36,7 @@
     @endif
     <td style="color:green;">
         @if($todo->deleted_at==null)
-            <a href="/edit/{{$todo->id}}" title="Upraviť" class="btn btn-outline-primary">✏️</a>
+            <a href="/edit/{{$todo->id}}" title="Upraviť" id="todoEdit" data-id="{{ $todo->id }}" class="btn btn-outline-primary">✏️</a>
             @if(Auth::id()==$todo->owner)
                 <a href="{{ route('todo.delete', $todo->id) }}" class="btn btn-outline-danger deleteTodo"
                    data-id="{{ $todo->id }}" title="Vymazať">

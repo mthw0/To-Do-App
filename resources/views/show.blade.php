@@ -6,7 +6,7 @@
         <p class="card-text">{{$todos->description}}.</p>
         <a href="/hotovo/{{$todos->id}}" title="Dokončiť" class="btn btn-outline-success">{{$todos->done==0?"✔️":"✔️"}}</a>
         @if($todos->deleted_at==null)
-            <a href="/edit/{{$todos->id}}" title="Upraviť" class="btn btn-outline-primary">✏️</a>
+            <a href="/edit/{{$todos->id}}" title="Upraviť" id="todoEdit" data-id="{{ $todos->id }}" class="btn btn-outline-primary">✏️</a>
             @if(Auth::id()==$todos->owner)
                 <a href="/delete/{{$todos->id}}" title="Vymazať" class="btn btn-outline-danger">
                     🗑️

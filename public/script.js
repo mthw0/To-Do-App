@@ -152,4 +152,23 @@ $(document).off('click', '.todoName').on('click', '.todoName', function (e){
     })
 
 })
+$(document).off('click', '#todoEdit').on('click', '#todoEdit', function (e){
+    e.preventDefault();
+    const token = $("meta[name='csrf-token']").attr("content");
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    const id = $(this).data("id");
+    $.ajax({
+        type:"GET",
+        token:token,
+        url: 'edit/' + id,
+        success: function (data) {
+            $('#obsah').html(data);
+        }
+    })
+
+})
 
