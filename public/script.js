@@ -14,7 +14,7 @@ $(document).ready(function () {
 });
 $(document).off('click', '.deleteTodo').on('click', '.deleteTodo', function (e) {
     e.preventDefault();
-
+    let form = $('#filterForm');
     const id = $(this).data("id");
     const token = $("meta[name='csrf-token']").attr("content");
     $.ajaxSetup({
@@ -46,7 +46,7 @@ $(document).off('click', '.deleteTodo').on('click', '.deleteTodo', function (e) 
 });
 $(document).off('click', '.undeleteTodo').on('click', '.undeleteTodo', function (e) {
     e.preventDefault();
-
+    let form = $('#filterForm');
     const id = $(this).data("id");
     const token = $("meta[name='csrf-token']").attr("content");
     $.ajaxSetup({
