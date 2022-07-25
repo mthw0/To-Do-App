@@ -27,7 +27,8 @@ Route::middleware('auth')->group(function (){
     Route::post('filter', [TodoController::class, 'filter'])->name('filter');
     Route::get('/', [TodoController::class,'index']);
     Route::get('/fetch', [TodoController::class,'fetch']);
-    Route::get('/send',[TodoController::class, 'send'])->name('send');;
+    Route::get('/send',[TodoController::class, 'send'])->name('send');
+    Route::redirect('/dashboard','/');
 });
 
 require __DIR__ . '/auth.php';
