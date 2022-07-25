@@ -43,8 +43,6 @@
         </form>
 
         <div id="tabulka"></div>
-
-        <script src="{{asset('script.js')}}"></script>
     </div>
 @endsection
 

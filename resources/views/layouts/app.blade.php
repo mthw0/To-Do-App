@@ -22,7 +22,7 @@
         }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/style.css', 'resources/js/script.js'])
 </head>
 
 <body>
