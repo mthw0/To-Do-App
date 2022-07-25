@@ -5,3 +5,12 @@
 #novaUloha {
     margin-top: 50px;
 }
+
+.btn {
+    border: 1px dotted;
+}
+
+a {
+    text-decoration: unset;
+    color: Black;
+}

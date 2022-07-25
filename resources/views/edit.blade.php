@@ -24,14 +24,8 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                Zdieľanie
-            </label>
-        </div>
         <div class="form-group m-3">
-            <label for="user">Výber používateľa</label>
+            <label for="user">Zdieľanie</label>
             <select class="form-control" id="user" name="user" >
                 <option></option>
                 @foreach((array)$users as $user)

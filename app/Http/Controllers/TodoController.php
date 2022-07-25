@@ -57,12 +57,12 @@ class TodoController extends Controller
                 $users[] = $user->name;
             }
         }
-        return view('todos.create', ['nazvy' => $nazvy, 'users' => $users]);
+        return view('todos.create', ['nazvy' => $nazvy, 'users' => $users])->render();
     }
 
     public function show(Todo $todo)
     {
-        return view('show')->with('todos', $todo);
+        return view('show')->with('todos', $todo)->render();
     }
 
     public function edit(Todo $todo)

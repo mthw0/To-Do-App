@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('owner')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('done')->default(false);
             $table->string('name', 30);
-            $table->string('description', 300);
+            $table->text('description');
             $table->softDeletes('deleted_at', $precision = 0);
         });
     }
