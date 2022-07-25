@@ -6,7 +6,7 @@
     $owner=$owner[0];
     $cat=$cat[0];
 @endphp
-<tr id="row{{$todo->id}}" data-id="{{ $todo->id }}">
+<tr id="row{{$todo->id}}">
 
     @if($todo->done)
 
@@ -14,7 +14,7 @@
             <input type="checkbox" href="/hotovo/{{$todo->id}}" class="form-check-input toggleDoneTodo"
                    {{$todo->done==0?"":"checked"}} data-id="{{ $todo->id }}">
         </th>
-        <td><a data-id="{{ $todo->id }}" href="show/{{$todo->id}}">
+        <td><a class="todoName" data-id="{{ $todo->id }}" href="show/{{$todo->id}}">
                 <del>{{$todo->name}}</del>
             </a></td>
         <td>
@@ -29,7 +29,7 @@
                    {{$todo->done==0?"":"checked"}} data-id="{{ $todo->id }}">
         </th>
         <td>
-            <a href="show/{{$todo->id}}" >{{$todo->name}}</a>
+            <a class="todoName" data-id="{{ $todo->id }}" href="show/{{$todo->id}}" >{{$todo->name}}</a>
         </td>
         <td>{{$todo->owner==Auth::id()?"Ja (".$owner.")":$owner }}</td>
         <td>{{$cat }}</td>

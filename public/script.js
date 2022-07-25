@@ -31,9 +31,43 @@ $(document).off('click', '.deleteTodo').on('click', '.deleteTodo', function (e) 
                 _token: token,
                 id: id
             },
+            success: function () {
+                $.ajax({
+                    type: "POST",
+                    url: 'filter',
+                    data: form.serialize(),
+                    success: function (data) {
+                        $('#tabulka').html(data);
+                    }
+                });
+            }
+        });
+
+});
+$(document).off('click', '.undeleteTodo').on('click', '.undeleteTodo', function (e) {
+    e.preventDefault();
+
+    const id = $(this).data("id");
+    const token = $("meta[name='csrf-token']").attr("content");
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax(
+        {
+            url: "undelete/" + id,
+            type: 'GET',
+            data: {
+                _token: token,
+                id: id
+            },
             success: function (res) {
                 $.ajax({
-                    url: "fetch",
+                    type: "POST",
+                    url: 'filter',
+                    data: form.serialize(),
                     success: function (data) {
                         $('#tabulka').html(data);
                     }
@@ -75,7 +109,6 @@ $(document).off('change', '.toggleDoneTodo').on('change', '.toggleDoneTodo', fun
         });
 });
 
-
 $('.form-check-input').change(function (e) {
     e.preventDefault();
 
@@ -88,38 +121,6 @@ $('.form-check-input').change(function (e) {
         }
     });
 })
-
-$(document).off('click', '.undeleteTodo').on('click', '.undeleteTodo', function (e) {
-    e.preventDefault();
-
-    const id = $(this).data("id");
-    const token = $("meta[name='csrf-token']").attr("content");
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $.ajax(
-        {
-            url: "undelete/" + id,
-            type: 'GET',
-            data: {
-                _token: token,
-                id: id
-            },
-            success: function (res) {
-                $.ajax({
-                    url: "fetch",
-                    success: function (data) {
-                        $('#tabulka').html(data);
-                    }
-                });
-            }
-        });
-
-});
-
 $('#novaUloha').click(function (e) {
     e.preventDefault();
     $.ajax({
@@ -131,15 +132,16 @@ $('#novaUloha').click(function (e) {
     })
 })
 
-$(document).off('click', 'tr').on('click', 'tr', function ()
-{
+
+$(document).off('click', '.todoName').on('click', '.todoName', function (e){
+    e.preventDefault();
     const token = $("meta[name='csrf-token']").attr("content");
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    var id = $(this).data("id");
+    const id = $(this).data("id");
     $.ajax({
         type:"GET",
         token:token,

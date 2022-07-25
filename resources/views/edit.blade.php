@@ -38,5 +38,6 @@
             <input type="submit" class="btn btn-primary float-end" value="Odoslať">
         </div>
     </form>
+    <a title="Prejsť naspäť" href="/" id="backButton" class="btn btn-outline-secondary">🔙</a>
 
 @endsection

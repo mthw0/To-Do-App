@@ -87,7 +87,6 @@ class TodoController extends Controller
             'description' => ['required'],
         ]);
 
-
         $data = request()->all();
 
         $todo->name = $data['name'];
