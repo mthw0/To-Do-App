@@ -11,11 +11,11 @@
         <form action="filter" id="filterForm" method="post" class="mt-4 p-4">
             @csrf
             <fieldset>
-                <legend>Dokončené</legend>
-                <label>Ano:
+                <legend>Stav</legend>
+                <label>Dokončené:
                     <input class="form-check-input" type="checkbox" name="doneYes" value="Checked" checked
                            id="doneTrue"/></label>
-                <label>Nie:
+                <label>Nedokončené:
                     <input class="form-check-input" type="checkbox" name="doneNo" value="Checked" checked
                            id="doneFalse"/></label>
 
