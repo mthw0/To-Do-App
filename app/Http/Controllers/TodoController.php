@@ -83,7 +83,7 @@ class TodoController extends Controller
     public function update(Todo $todo)
     {
         $this->validate(request(), [
-            'name' => ['required'],
+            'name' => 'required|max:30',
             'description' => ['required'],
         ]);
 
@@ -220,7 +220,7 @@ class TodoController extends Controller
     public function store()
     {
         $this->validate(request(), [
-            'name' => ['required'],
+            'name' => 'required|max:30',
             'description' => ['required']
         ]);
 

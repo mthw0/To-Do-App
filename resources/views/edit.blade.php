@@ -2,11 +2,11 @@
     @csrf
     <div class="form-group m-3">
         <label for="name">Názov úlohy</label>
-        <input type="text" class="form-control" value="{{$todo->name}}" name="name">
+        <input type="text" class="form-control" value="{{$todo->name}}" name="name" required placeholder="Zadajte názov" pattern=".{1,30}" title="Maximálna dĺžka je 30 znakov">
     </div>
     <div class="form-group m-3">
         <label for="description">Popis úlohy</label>
-        <textarea class="form-control" name="description" rows="3"> {{$todo->description}} </textarea>
+        <textarea class="form-control" name="description" rows="3" required placeholder="Zadajte popis"> {{$todo->description}} </textarea>
     </div>
 
     <div class="form-group m-3">

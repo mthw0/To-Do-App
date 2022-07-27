@@ -2,11 +2,11 @@
     @csrf
     <div class="form-group m-3">
         <label for="name">Názov úlohy</label>
-        <input type="text" class="form-control" name="name">
+        <input type="text" class="form-control" name="name" required placeholder="Zadajte názov" pattern=".{1,30}" title="Maximálna dĺžka je 30 znakov">
     </div>
     <div class="form-group m-3">
         <label for="description">Popis úlohy</label>
-        <textarea class="form-control" name="description" rows="3"></textarea>
+        <textarea class="form-control" name="description" rows="3" required placeholder="Zadajte popis"></textarea>
     </div>
     <div class="form-group m-3">
         <label for="category">Kategória</label>
